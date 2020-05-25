@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Notification from './components/Notification'
 
-import Blog from './components/Blog'
+import Blogs from './components/Blogs'
+import Login from './components/Login'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,13 +10,7 @@ import loginService from './services/login'
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
 
   useEffect(() => {
@@ -33,16 +28,13 @@ const App = () => {
     }
   }, [])
 
-  const handleLogout = () => {
+  const logout = () => {
     window.localStorage.removeItem('loggedBlogsappUser')
     setUser(null)
     blogService.setToken(null)
-    setUsername('')
-    setPassword('')
   }
 
-  const handleCreateBlog = async (event) => {
-    event.preventDefault()
+  const createBlog = async (title, author, url) => {
     try {
       const blog = await blogService.create({
         title, author, url
@@ -50,10 +42,7 @@ const App = () => {
 
       const result = await blogService.getAll()
       setBlogs(result)
-      
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+
       setErrorMessage(`success: a new blog added - ${blog.title}`)
       setTimeout(() => {
         setErrorMessage(null)
@@ -67,8 +56,7 @@ const App = () => {
   }
 
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const login = async (username, password) => {
     try {
       const user = await loginService.login({
         username, password,
@@ -80,8 +68,6 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       setErrorMessage('error: wrong credentials')
       setTimeout(() => {
@@ -95,80 +81,16 @@ const App = () => {
     return (
       <div>
         <Notification message={errorMessage} />
-
-        <h1>Login</h1>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-                <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-                <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
+        <Login login={login} />
       </div>
     )
   }
 
-
   return (
     <div>
-        <Notification message={errorMessage} />
+      <Notification message={errorMessage} />
+      <Blogs  user={user} logout={logout} createBlog={createBlog} blogs={blogs}/>
 
-
-      <h2>blogs</h2>
-      <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-
-
-      <h1>create new</h1>
-        <form onSubmit={handleCreateBlog}>
-        <div>
-            title
-                <input
-              type="text"
-              value={title}
-              name="Title"
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </div>
-          <div>
-            author
-                <input
-              type="text"
-              value={author}
-              name="Author"
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </div>
-          <div>
-            url
-                <input
-              type="text"
-              value={url}
-              name="Url"
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </div>
-          <button type="submit">create new blog</button>
-        </form>
-
-
-
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
     </div>
   )
 }
