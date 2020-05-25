@@ -3,7 +3,7 @@ import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 
-const Blogs = ({ user, logout, createBlog, blogs, updateBlog }) => {
+const Blogs = ({ user, logout, createBlog, blogs, updateBlog, deleteBlog }) => {
     const blogsRef = React.createRef()
     
 
@@ -11,6 +11,11 @@ const Blogs = ({ user, logout, createBlog, blogs, updateBlog }) => {
         createBlog(title,author,url)
         blogsRef.current.toggleVisibility()
     }
+
+    blogs.sort(function (a, b) {
+        return b.likes - a.likes;
+      });
+      
 
     return (
         <div>
@@ -22,8 +27,9 @@ const Blogs = ({ user, logout, createBlog, blogs, updateBlog }) => {
                 <BlogForm createBlog={createBlogx} />
             </Togglable>
 
+
             {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+                <Blog user={user} key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
             )}
 
 

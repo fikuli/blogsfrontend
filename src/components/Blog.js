@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -24,8 +24,27 @@ const Blog = ({ blog, updateBlog }) => {
     setVisible(!visible)
   }
 
+  const deleteEntry = (event) => {
+    if (window.confirm(`Delete ${blog.title}?`)) { 
+      deleteBlog(blog.id)
+    }
+  }
 
-  if (visible) {
+  console.log(user)
+  console.log(blog)
+
+  if (visible && user.username === blog.user.username) {
+    return (
+      <div style={blogStyle}>
+        <p>{blog.title} - {blog.author} <button onClick={showDetails}>{view}</button></p>
+        <p>{blog.url}</p>
+        <p>likes {blog.likes} <button onClick={like}>like</button></p>
+        <p>{blog.user.name}</p>
+        <p><button onClick={deleteEntry}>delete</button></p>
+      </div>
+    )
+  }
+  else if(visible){
     return (
       <div style={blogStyle}>
         <p>{blog.title} - {blog.author} <button onClick={showDetails}>{view}</button></p>
@@ -35,7 +54,6 @@ const Blog = ({ blog, updateBlog }) => {
       </div>
     )
   }
-
   return (
     <div style={blogStyle}>
       {blog.title} - {blog.author} <button onClick={showDetails}>{view}</button>

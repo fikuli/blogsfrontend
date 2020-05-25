@@ -75,6 +75,22 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (id) => {
+    try {
+      await blogService.remove(id)
+
+      const result = await blogService.getAll()
+      setBlogs(result)
+    }
+    catch (exception) {
+      setErrorMessage(`error: ${exception.response.data.error}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      return 0
+    }
+  }
+
   const login = async (username, password) => {
     try {
       const user = await loginService.login({
@@ -108,7 +124,7 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
-      <Blogs user={user} logout={logout} createBlog={createBlog} blogs={blogs} updateBlog={updateBlog}/>
+      <Blogs user={user} logout={logout} createBlog={createBlog} blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} />
 
     </div>
   )
