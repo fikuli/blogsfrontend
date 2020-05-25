@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -13,8 +13,11 @@ const Blog = ({ blog }) => {
   const [view, setView] = useState('view')
 
   const like = (event) => {
-
+    const newObject = {...blog}
+    newObject.likes +=1
+    updateBlog(blog.id, newObject)
   }
+
   const showDetails = (event) => {
     if (!visible) setView('hide')
     else setView('view')

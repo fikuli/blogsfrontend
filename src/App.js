@@ -46,14 +46,27 @@ const App = () => {
       const result = await blogService.getAll()
       setBlogs(result)
 
-      
-
       setErrorMessage(`success: a new blog added - ${blog.title}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      return 1
     } catch (exception) {
+      setErrorMessage(`error: ${exception.response.data.error}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+
+  const updateBlog = async (id, newObject) => {
+    try {
+      await blogService.update(id, newObject)
+
+      const result = await blogService.getAll()
+      setBlogs(result)
+    }
+    catch (exception) {
       setErrorMessage(`error: ${exception.response.data.error}`)
       setTimeout(() => {
         setErrorMessage(null)
@@ -61,7 +74,6 @@ const App = () => {
       return 0
     }
   }
-
 
   const login = async (username, password) => {
     try {
@@ -96,7 +108,7 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
-      <Blogs user={user} logout={logout} createBlog={createBlog} blogs={blogs}/>
+      <Blogs user={user} logout={logout} createBlog={createBlog} blogs={blogs} updateBlog={updateBlog}/>
 
     </div>
   )
