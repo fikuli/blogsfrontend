@@ -6,7 +6,7 @@ const Login = ({ login }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    
+
     const handleLogin = (event) => {
         event.preventDefault()
 
@@ -14,7 +14,7 @@ const Login = ({ login }) => {
 
         setUsername('')
         setPassword('')
-      }
+    }
 
 
     return (

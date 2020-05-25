@@ -34,6 +34,9 @@ const App = () => {
     blogService.setToken(null)
   }
 
+
+ 
+
   const createBlog = async (title, author, url) => {
     try {
       const blog = await blogService.create({
@@ -43,15 +46,19 @@ const App = () => {
       const result = await blogService.getAll()
       setBlogs(result)
 
+      
+
       setErrorMessage(`success: a new blog added - ${blog.title}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
+      return 1
     } catch (exception) {
       setErrorMessage(`error: ${exception.response.data.error}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
+      return 0
     }
   }
 
@@ -89,7 +96,7 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
-      <Blogs  user={user} logout={logout} createBlog={createBlog} blogs={blogs}/>
+      <Blogs user={user} logout={logout} createBlog={createBlog} blogs={blogs}/>
 
     </div>
   )

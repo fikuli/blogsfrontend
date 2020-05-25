@@ -1,72 +1,33 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Blog from './Blog'
+import BlogForm from './BlogForm'
+import Togglable from './Togglable'
 
-const Blogs = ({user, logout, createBlog, blogs}) =>{
-
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
-  
-  
-    const handleCreateBlog = async (event) => {
-        event.preventDefault()
-        createBlog(title, author, url)
-
-        setTitle('')
-        setAuthor('')
-        setUrl('')
-      }
+const Blogs = ({ user, logout, createBlog, blogs }) => {
+    const blogsRef = React.createRef()
     
 
-
+    const createBlogx = async (title, author, url) => {
+        createBlog(title,author,url)
+        blogsRef.current.toggleVisibility()
+    }
 
     return (
-<div>
-
-<h2>blogs</h2>
-      <p>{user.name} logged in <button onClick={logout}>logout</button></p>
-
-
-      <h1>create new</h1>
-      <form onSubmit={handleCreateBlog}>
         <div>
-          title
-                <input
-            type="text"
-            value={title}
-            name="Title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
+
+            <h2>blogs</h2>
+            <p>{user.name} logged in <button onClick={logout}>logout</button></p>
+
+            <Togglable buttonLabel='create new' ref={blogsRef}>
+                <BlogForm createBlog={createBlogx} />
+            </Togglable>
+
+            {blogs.map(blog =>
+                <Blog key={blog.id} blog={blog} />
+            )}
+
+
         </div>
-        <div>
-          author
-                <input
-            type="text"
-            value={author}
-            name="Author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url
-                <input
-            type="text"
-            value={url}
-            name="Url"
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create new blog</button>
-      </form>
-
-
-
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-
-
-    </div>
 
     )
 }
