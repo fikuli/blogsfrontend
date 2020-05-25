@@ -12,20 +12,20 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   const [visible, setVisible] = useState(false)
   const [view, setView] = useState('view')
 
-  const like = (event) => {
-    const newObject = {...blog}
+  const like = () => {
+    const newObject = { ...blog }
     newObject.likes +=1
     updateBlog(blog.id, newObject)
   }
 
-  const showDetails = (event) => {
+  const showDetails = () => {
     if (!visible) setView('hide')
     else setView('view')
     setVisible(!visible)
   }
 
-  const deleteEntry = (event) => {
-    if (window.confirm(`Delete ${blog.title}?`)) { 
+  const deleteEntry = () => {
+    if (window.confirm(`Delete ${blog.title}?`)) {
       deleteBlog(blog.id)
     }
   }
