@@ -9,13 +9,17 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
     marginBottom: 5
   }
 
+
+  const [bblog, setBblog] = useState(blog)
+
   const [visible, setVisible] = useState(false)
   const [view, setView] = useState('view')
 
-  const like = () => {
-    const newObject = { ...blog }
+  const like = async () => {
+    const newObject = { ...bblog }
     newObject.likes +=1
-    updateBlog(blog.id, newObject)
+    setBblog(newObject)
+    await updateBlog(bblog.id, newObject)
   }
 
   const showDetails = () => {
@@ -25,21 +29,21 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   }
 
   const deleteEntry = () => {
-    if (window.confirm(`Delete ${blog.title}?`)) {
-      deleteBlog(blog.id)
+    if (window.confirm(`Delete ${bblog.title}?`)) {
+      deleteBlog(bblog.id)
     }
   }
 
   console.log(user)
-  console.log(blog)
+  console.log(bblog)
 
-  if (visible && user.username === blog.user.username) {
+  if (visible && user.username === bblog.user.username) {
     return (
       <div style={blogStyle} className='blog'>
-        <p>{blog.title} - {blog.author} <button onClick={showDetails}>{view}</button></p>
-        <p>{blog.url}</p>
-        <p>likes {blog.likes} <button onClick={like}>like</button></p>
-        <p>{blog.user.name}</p>
+        <p>{bblog.title} - {bblog.author} <button onClick={showDetails}>{view}</button></p>
+        <p>{bblog.url}</p>
+        <p>likes {bblog.likes} <button onClick={like}>like</button></p>
+        <p>{bblog.user.name}</p>
         <p><button onClick={deleteEntry}>delete</button></p>
       </div>
     )
@@ -47,16 +51,16 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   else if(visible){
     return (
       <div style={blogStyle} className='blog'>
-        <p>{blog.title} - {blog.author} <button onClick={showDetails}>{view}</button></p>
-        <p>{blog.url}</p>
-        <p>likes {blog.likes} <button onClick={like}>like</button></p>
-        <p>{blog.user.name}</p>
+        <p>{bblog.title} - {bblog.author} <button onClick={showDetails}>{view}</button></p>
+        <p>{bblog.url}</p>
+        <p>likes {bblog.likes} <button onClick={like}>like</button></p>
+        <p>{bblog.user.name}</p>
       </div>
     )
   }
   return (
     <div style={blogStyle} className='blog'>
-      {blog.title} - {blog.author} <button onClick={showDetails}>{view}</button>
+      {bblog.title} - {bblog.author} <button onClick={showDetails}>{view}</button>
     </div>
   )
 }

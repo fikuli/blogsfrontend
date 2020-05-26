@@ -8,7 +8,7 @@ const Blogs = ({ user, logout, createBlog, blogs, updateBlog, deleteBlog }) => {
 
 
   const createBlogx = async (title, author, url) => {
-    createBlog(title,author,url)
+    createBlog(title, author, url)
     blogsRef.current.toggleVisibility()
   }
 
@@ -27,11 +27,11 @@ const Blogs = ({ user, logout, createBlog, blogs, updateBlog, deleteBlog }) => {
         <BlogForm createBlog={createBlogx} />
       </Togglable>
 
-
-      {blogs.map(blog =>
-        <Blog user={user} key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
-      )}
-
+      <div className="blogsClass">
+        {blogs.map(blog =>
+          <Blog user={user} key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
+        )}
+      </div>
 
     </div>
 

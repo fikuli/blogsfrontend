@@ -114,7 +114,7 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className="loginClass">
         <Notification message={errorMessage} />
         <Login login={login} />
       </div>
