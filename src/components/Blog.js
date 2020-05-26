@@ -35,7 +35,7 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
 
   if (visible && user.username === blog.user.username) {
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='blog'>
         <p>{blog.title} - {blog.author} <button onClick={showDetails}>{view}</button></p>
         <p>{blog.url}</p>
         <p>likes {blog.likes} <button onClick={like}>like</button></p>
@@ -46,7 +46,7 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   }
   else if(visible){
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='blog'>
         <p>{blog.title} - {blog.author} <button onClick={showDetails}>{view}</button></p>
         <p>{blog.url}</p>
         <p>likes {blog.likes} <button onClick={like}>like</button></p>
@@ -55,7 +55,7 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
     )
   }
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {blog.title} - {blog.author} <button onClick={showDetails}>{view}</button>
     </div>
   )
